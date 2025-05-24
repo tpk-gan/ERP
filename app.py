@@ -10,7 +10,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///po.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Temp.db'
 DB.init_app(app)
 
 @login_manager.user_loader
@@ -38,3 +38,11 @@ def login():
 def logout():
     logout_user()
     return redirect('/login')
+
+@app.route('/')
+@login_required
+def home():
+    return render_template('base.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
