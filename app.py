@@ -1,6 +1,6 @@
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from models import DB, ROLE, USER
-from flask import Flask, flash, redirect, render_template, request
+from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -28,8 +28,10 @@ def login():
 
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect('/')
-        return "Invalid credentials", 401
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))
+        flash('Invalid username or password.', 'error')
+        return redirect(url_for('login'))
     
     return render_template('login.html')
 
@@ -65,7 +67,7 @@ def users():
             #check for repeat username
             """pip install werkzeug bcrypt to get this working"""
             if USER.query.filter_by(username = username).first():
-                flash('Username already exists')
+                flash('Username already exists', 'error')
             else:
                 new_user = USER(
                     username = username,
@@ -76,7 +78,7 @@ def users():
                 # add and commit the changes
                 DB.session.add(new_user)
                 DB.session.commit()
-                flash('User added successfully')
+                flash('User added successfully','success')
         # (incomplete) add new user
             
     #get method to get list of usernames and roles

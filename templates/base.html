@@ -139,14 +139,16 @@
         </div>
     </header>
 
-    {# code for displaying flash messages #}
-    {% with messages = get_flashed_messages() %}
+    <!-- Flash Messages as Popups -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <ul>
-                {% for msg in messages %}
-                    <li>{{ msg }}</li>
-                {% endfor %}
-            </ul>
+            {% for category, msg in messages %}
+                <div class="popup {{ category }}">
+                    <button class="popup-close" onclick="closePopup(this)">Close</button>
+                    <div class="popup-header">{{ category | capitalize }}</div>
+                    <div>{{ msg }}</div>
+                </div>
+            {% endfor %}
         {% endif %}
     {% endwith %}
 
@@ -155,5 +157,27 @@
         {% block title %}<h2 class="text-xl font-semibold mb-4" align="center"></h2>Welcome to ERP system</h2>{% endblock %}
         {% block content %}Default Text{% endblock %}
     </main>
+    <script>
+        // Show popups on page load if they exist
+        document.addEventListener('DOMContentLoaded', () => {
+            const popups = document.querySelectorAll('.popup');
+            const overlay = document.getElementById('popupOverlay');
+            if (popups.length > 0) {
+                popups.forEach(popup => popup.style.display = 'block');
+                overlay.style.display = 'block';
+            }
+        });
+
+        // Close popup and hide overlay
+        function closePopup(button) {
+            const popup = button.parentElement;
+            popup.style.display = 'none';
+            // Hide overlay if no popups are visible
+            const visiblePopups = document.querySelectorAll('.popup[style*="block"]');
+            if (visiblePopups.length === 0) {
+                document.getElementById('popupOverlay').style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
