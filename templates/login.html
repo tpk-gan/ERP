@@ -3,9 +3,10 @@
 {% block content %}
 <form method="POST" align="center">
     <label>Username:</label><br>
-    <input type="text" name="username"><br>
+        <input type="text" name="username"><br>
     <label>Password:</label><br>
-    <input type="password" name="password"><br><br>
-    <input type="submit" value="Login">
+        <input type="password" name="password"><br><br>
+    {#<input type="submit" value="Login">#}
+    <button type="submit" class="button button_green" value="Login">Login</button>
 </form>
 {% endblock %}

@@ -1,0 +1,61 @@
+{# is an extension of base.html #}
+{% extends "base.html" %}
+
+{% block title %}<h1 class="text-xl font-bold mb-6" align ="center"><u><b>Users And Roles</b></u></h1>{% endblock %}
+ <hr>
+{% block content %}
+    <h3 class="text-xl font-semibold mb-4"><u> Add New User</u></h3>
+    <hr>
+    <form method="POST">
+        <table class="table_unbordered">
+            <input type="hidden" name="add_user_hidden_flag"> {# Creates a key named add_user_hidden_flag with empty value to verify which form post method id used #}
+            <tr>
+                <td><label>Username : </label></td>
+                <td><input type="text" name = "username_user_ip" required></td> 
+            </tr>
+            <tr>
+                <td><label>Password : </label></td>
+                <td><input type="password" name = "password_user_ip" required></td>
+            </tr>
+            <tr>
+                    <td><label>Role : </label></td>
+                    <td>
+                        <select name="role_id_user_ip">
+                            {% for role in roles_html_var %}
+                                <option value="{{ role.id }}">
+                                    {{ role.role_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+            </tr>
+        </table>
+        <button type="submit" class="button button_green">Add User</button>
+    </form>
+    <hr><hr><hr><hr><hr><hr>
+    <h3 class="text-xl font-semibold mb-4"><u>Existing Users</u></h3>
+    <table class="table_bordered">
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+        </tr>
+        {% for user in users_html_var %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.role.role_name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr><hr><hr><hr><hr><hr>
+    <h3 class="text-xl font-semibold mb-4"><u> Existing Roles</u></h3>
+    <table class="table_bordered">
+        <tr>
+            <th>Role name</th>
+        </tr>
+        {% for role in roles_html_var %}
+            <tr>
+                <td>{{ role.role_name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

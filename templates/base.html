@@ -11,6 +11,107 @@
         body {
             padding-top: 64px; /* Adjust based on header height */
         }
+        .button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button_green {background-color: #04AA6D;} /* Green */
+        .button_blue {background-color: #008CBA;} /* Blue */
+        
+        .table_bordered {
+            border: 2px solid;
+            border-collapse: collapse;
+        }
+        .table_bordered th, .table_bordered td {
+        border: 1px solid black;
+        padding: 8px;
+        }
+        .table_unbordered {
+            border: 0px;
+            border-collapse: collapse;
+        }
+        .table_unbordered th, .table_unbordered td {
+        padding: 8px;
+        }
+
+        .table_home {
+            border: 0px;
+            width: 100%;
+            height: 100%;
+        }
+        .table_home th, .table_home td {
+            padding: 5px;
+            text-align: center;
+        }
+        .button_home {
+            background-color: #8B5CF6; /* Purple */
+            color: #F5F5F5; /* Off-white text */
+            padding: 15px 30px; /* Adjusted for better size */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 32px; /* Slightly smaller for balance */
+            margin: 16px 8px;
+            cursor: pointer;
+            border: 1px solid #6D28D9; /* Dark purple border */
+            border-radius: 6px; /* Rounded corners */
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+            transition: background-color 0.3s ease;
+        }
+        .button_home:hover {
+            background-color: #6D28D9; /* Dark purple on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+        }
+        .popup.success {
+            border-left: 4px solid #04AA6D;
+        }
+        .popup.error {
+            border-left: 4px solid #DC2626;
+        }
+        .popup-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .popup-close {
+            background-color: #6B7280;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -28,16 +129,30 @@
             <!-- User Info and Logout Button on the Right -->
             <div id="userSection" class="flex items-center space-x-4">
                 {% if current_user.is_authenticated %}
-                <span id="userName" class="text-lg">{{ current_user.username}}</span>
+                <span id="username" class="text-lg">{{ current_user.username}}</span>
+                    {% if current_user.role.role_name == 'admin' %}
+                        <a href="{{ url_for('users') }}"><button id="UsersButton" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md">Users</button></a>
+                    {% endif %}
                 <a href="{{ url_for('logout') }}"><button id="logoutButton" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">Logout</button></a>
                 {% endif %}
             </div>
         </div>
     </header>
 
+    {# code for displaying flash messages #}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
     <!-- Main Content Area -->
     <main class="container mx-auto p-4">
-        <h2 class="text-xl font-semibold mb-4" align="center">{% block title %}Welcome to ERP system{% endblock %}</h2>
+        {% block title %}<h2 class="text-xl font-semibold mb-4" align="center"></h2>Welcome to ERP system</h2>{% endblock %}
         {% block content %}Default Text{% endblock %}
     </main>
 </body>

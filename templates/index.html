@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{#{% block title %}{% endblock %}#}
+
+{% block content %}
+<table class = "table_home">
+    <tr>
+        <td>
+            <a href="{{ url_for('home') }}">
+            <button type = "button" class="button_home">Sales Order</button>
+            </a>
+        </td>
+        <td>
+            <a href="{{ url_for('home') }}">
+            <button type = "button" class="button_home">Purchase Order</button>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="{{ url_for('home') }}">
+            <button type = "button" class="button_home">Customer</button>
+            </a>
+        </td>
+        <td>
+            <a href="{{ url_for('home') }}">
+            <button type = "button" class="button_home">Supplier</button>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="{{ url_for('home') }}">
+            <button type = "button" class="button_home">Timetable</button>
+            </a>
+        </td>
+    </tr>
+{% endblock %}
