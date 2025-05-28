@@ -130,8 +130,11 @@
             <div id="userSection" class="flex items-center space-x-4">
                 {% if current_user.is_authenticated %}
                 <span id="username" class="text-lg">{{ current_user.username}}</span>
-                    {% if current_user.role.role_name == 'admin' %}
+                    {% if current_user.role.role_name == 'admin' and request.path != url_for('users') %}
                         <a href="{{ url_for('users') }}"><button id="UsersButton" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md">Users</button></a>
+                    {% endif %}
+                    {% if request.path != url_for('home') %}
+                        <a href="{{ url_for('home') }}"><button id="UsersButton" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md">Home</button></a>
                     {% endif %}
                 <a href="{{ url_for('logout') }}"><button id="logoutButton" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">Logout</button></a>
                 {% endif %}

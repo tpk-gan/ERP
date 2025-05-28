@@ -1,5 +1,6 @@
+#app.py
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from models import DB, ROLE, USER
+from models import CUSTOMER, CUSTOMER_ADDRESSES, CUSTOMER_CONTACTS, DB, ROLE, USER
 from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -52,7 +53,8 @@ def users():
 
     #prevent unauthorised access
     if current_user.role.role_name != 'admin':
-        return "Access Denied", 403
+        flash('Access denied','error')
+        return render_template('index.html')
     
     #post method to add new user
     if request.method == 'POST':
@@ -64,28 +66,58 @@ def users():
             password = request.form['password_user_ip']
             role_id = request.form['role_id_user_ip']
 
-            #check for repeat username
-            """pip install werkzeug bcrypt to get this working"""
-            if USER.query.filter_by(username = username).first():
-                flash('Username already exists', 'error')
-            else:
-                new_user = USER(
-                    username = username,
-                    password = generate_password_hash( password, method = "pbkdf2:sha256"),
-                    role_id = role_id
-                )
-
+            if username != None and password != None and role_id != None :
+                #check for repeat username
+                """pip install werkzeug bcrypt to get this working"""
+                if USER.query.filter_by(username = username).first():
+                    flash('Username already exists', 'error')
+                else:
+                    new_user = USER(
+                        username = username,
+                        password = generate_password_hash( password, method = "pbkdf2:sha256"),
+                        role_id = role_id
+                    )
                 # add and commit the changes
                 DB.session.add(new_user)
                 DB.session.commit()
                 flash('User added successfully','success')
-        # (incomplete) add new user
-            
+                # (incomplete) add new user
+            else:
+                flash('One of the required feilds is empty','error')
+
     #get method to get list of usernames and roles
-    roles_app_var = ROLE.query.all()
-    users_app_var = USER.query.all()
+    roles_app_var = DB.session.execute(DB.select(ROLE)).scalars().all()
+    #users_app_var = DB.session.execute(DB.select(USER).where(USER.deleted == False)).scalars().all()
+    users_app_var = DB.session.execute(
+        DB.select(USER.username,ROLE.role_name)
+        .join(ROLE, USER.role_id == ROLE.id)
+        .where(USER.deleted == False)
+    ).mappings().all()
+    #users_app_var = USER.query.filter_by(deleted=False).all()
 
     return render_template('users_and_roles.html', users_html_var = users_app_var, roles_html_var = roles_app_var)
+
+@app.route('/customers', methods = ['GET'])
+@login_required
+def customers():
+    #customers_list = CUSTOMER.get_active().all()
+    customers_list = DB.session.execute(
+        DB.select(
+            CUSTOMER.company_name,
+            CUSTOMER.gst_number,
+            CUSTOMER_ADDRESSES.address_line1,
+            CUSTOMER_ADDRESSES.address_line2,
+            CUSTOMER_ADDRESSES.address_line3,
+            CUSTOMER_CONTACTS.name,
+            CUSTOMER_CONTACTS.mobile_number1,
+            CUSTOMER_CONTACTS.mobile_number2,
+            CUSTOMER_CONTACTS.email,
+        )
+        .outerjoin(CUSTOMER_ADDRESSES,(CUSTOMER.id == CUSTOMER_ADDRESSES.customer_id)&(CUSTOMER_ADDRESSES.deleted == False)&(CUSTOMER_ADDRESSES.default_address == True))
+        .outerjoin(CUSTOMER_CONTACTS,(CUSTOMER.id == CUSTOMER_CONTACTS.customer_id)&(CUSTOMER_CONTACTS.deleted == False)&(CUSTOMER_CONTACTS.default_contact == True))
+        .order_by(CUSTOMER.id, CUSTOMER_ADDRESSES.id, CUSTOMER_CONTACTS.id)
+    ).mappings().all()
+    return render_template('customers.html',customers_html_var = customers_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
