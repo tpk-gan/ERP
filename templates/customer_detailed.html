@@ -1,45 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Customers{% endblock %}
+{% block title %}Customer : {{ customer_html_var[0].company_name }}
+<a href="{{ url_for('customers') }}">
+    <button type="submit" class="button button_grey">Back</button>
+</a>
+{% endblock %}
 
 {% block content %}
-
-    <table class="table_bordered">
-        <tr>
-            <th>View details</th>
-            <th>Company name</th>
-            <th>GST number</th>
-            <th>Address 1</th>
-            <th>Contact person 1</th>
-            <th>Sales Orders</th>
-        </tr>
-        {% for customer in customers_html_var %}
-            <tr>
-                <td>Link</td>
-                <td>{{ customer.company_name| default('N/A') }}</td>
-                <td>{{ customer.gst_number| default('N/A') }}</td> 
-                <td>
-                    {% if customer.address_line1 %}
-                        {{ customer.address_line1 | default('N/A') }}<br>
-                        {{ customer.address_line2 | default('N/A') }}<br>
-                        {{ customer.address_line3 | default('N/A') }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>
-                    {% if customer.name %}
-                        {{ customer.name | default('N/A') }}<br>
-                        {{ customer.mobile_number1 | default('N/A') }}<br>
-                        {{ customer.mobile_number2 | default('N/A')}}<br>
-                        {{ customer.email | default('N/A') }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>Link</td>
-            </tr>
-        {% endfor %}
-    </table>
-
+<h1>Company Name: {{ customer_html_var[0].company_name }}</h1>
+<p>GST Number: {{ customer_html_var[0].gst_number }}</p>
+<hr>
+<h2>Addresses</h2>
+<table class="table_bordered">
+    {% for row in addresses_html_var %}
+    <tr><td>{{ row.address_line1 }},<br>{{ row.address_line2 }},<br>{{ row.address_line3 }}.<br></td></tr>
+    {% else %}
+    <tr>Placeholder</tr>
+    {% endfor %}
+</table>
+<hr>
+<h2>Contacts</h2>
+<table class="table_bordered">
+  {% for row in contacts_html_var %}
+    <tr><td>{{ row.name }},<br>{{ row.mobile_number1 }},<br>{{ row.mobile_number2 }},<br>{{ row.email }}<br></td></tr>
+  {% else %}
+    <tr>Placeholder</tr>
+  {% endfor %}
+</table>
 {% endblock %}

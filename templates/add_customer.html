@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Customer
+<a href="{{ url_for('customers') }}">
+    <button type="submit" class="button button_grey">Back</button>
+</a>
+<br>
+{% endblock %}
+{% block content %}
+    <form method="POST" action="{{ url_for('add_customer') }}">
+        <input type="hidden" name="add_customer_hidden_flag" value="1">
+
+        <label>Company Name:</label><br>
+        <input type="text" name="company_name_user_ip" required><br><br>
+
+        <label>GST Number:</label><br>
+        <input type="text" name="gst_number_user_ip" required><br><br>
+
+        <h3>Addresses</h3>
+        <table id="addresses-table" class="table_bordered">
+            <tr>
+                <th>Address Line 1</th>
+                <th>Address Line 2</th>
+                <th>Address Line 3</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="address_line1[]"></td>
+                <td><input type="text" name="address_line2[]"></td>
+                <td><input type="text" name="address_line3[]"></td>
+                <td><button type="button" onclick="this.parentElement.parentElement.remove()">🗑️</button></td>
+            </tr>
+        </table>
+        <button type="button" onclick="addAddressRow()">➕</button><br><br>
+
+        <h3>Contacts</h3>
+        <table id="contacts-table" class="table_bordered">
+            <tr>
+                <th>Name</th>
+                <th>Mobile 1</th>
+                <th>Mobile 2</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="contact_name[]"></td>
+                <td><input type="text" name="contact_mobile1[]"></td>
+                <td><input type="text" name="contact_mobile2[]"></td>
+                <td><input type="email" name="contact_email[]"></td>
+                <td><button type="button" onclick="this.parentElement.parentElement.remove()">🗑️</button></td>
+            </tr>
+        </table>
+        <button type="button" onclick="addContactRow()">➕</button><br><br>
+
+        <button type="submit" class="button button_green">Add Customer</button>
+    </form>
+
+    <script>
+        function addAddressRow() {
+            const table = document.getElementById('addresses-table');
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td><input type="text" name="address_line1[]"></td>
+                <td><input type="text" name="address_line2[]"></td>
+                <td><input type="text" name="address_line3[]"></td>
+                <td><button type="button" onclick="this.parentElement.parentElement.remove()">🗑️</button></td>
+            `;
+        }
+
+        function addContactRow() {
+            const table = document.getElementById('contacts-table');
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td><input type="text" name="contact_name[]"></td>
+                <td><input type="text" name="contact_mobile1[]"></td>
+                <td><input type="text" name="contact_mobile2[]"></td>
+                <td><input type="email" name="contact_email[]"></td>
+                <td><button type="button" onclick="this.parentElement.parentElement.remove()">🗑️</button></td>
+            `;
+        }
+    </script>
+
+{% endblock %}

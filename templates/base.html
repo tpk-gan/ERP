@@ -14,17 +14,49 @@
         .button {
             border: none;
             color: white;
-            padding: 15px 32px;
+            padding: 10px 21px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
+            border-radius: 24px; /* Rounded corners */
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
         }
 
-        .button_green {background-color: #04AA6D;} /* Green */
-        .button_blue {background-color: #008CBA;} /* Blue */
+        .button_green {
+            background-color: #04AA6D;
+            transition: background-color 0.3s ease;
+        } /* Green */
+        .button_green:hover {
+            background-color: #06812f; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+        .button_grey {
+            background-color: #7c8380;
+            transition: background-color 0.3s ease;
+        } /* Grey */
+        .button_grey:hover {
+            background-color: #29282b;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+        .button_blue {
+            background-color: #008CBA;
+            transition: background-color 0.3s ease;
+        } /* Blue */
+        .button_blue:hover {
+            background-color: #02516b; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+        .button_purple {
+            background-color: #c10898;
+            transition: background-color 0.3s ease;
+        } /* Purple */
+        .button_purple:hover {
+            background-color: #670451;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
         
         .table_bordered {
             border: 2px solid;
@@ -52,24 +84,30 @@
             text-align: center;
         }
         .button_home {
-            background-color: #8B5CF6; /* Purple */
-            color: #F5F5F5; /* Off-white text */
-            padding: 15px 30px; /* Adjusted for better size */
+            background-color: #8B5CF6;
+            color: #F5F5F5;
+            padding: 15px 30px;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
-            font-size: 32px; /* Slightly smaller for balance */
-            margin: 16px 8px;
+            display: block;
+            width: 100%;
+            height: 100%;               /* Take all available height */
+            max-height: 300px;          /* Set your preferred max height */
+            font-size: 32px;
+            margin: 16px auto;
             cursor: pointer;
-            border: 1px solid #6D28D9; /* Dark purple border */
-            border-radius: 6px; /* Rounded corners */
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+            border: 1px solid #6D28D9;
+            border-radius: 56px;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease;
+            box-sizing: border-box;     /* Ensures padding doesn't exceed max-height */
         }
+
         .button_home:hover {
-            background-color: #6D28D9; /* Dark purple on hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+            background-color: #6D28D9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+
         .popup {
             display: none;
             position: fixed;
