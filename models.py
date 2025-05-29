@@ -24,6 +24,9 @@ class USER(UserMixin, DB.Model):
         return f"<User {self.username}>"
 
 class CUSTOMER(DB.Model):
+
+    __tablename__ = 'customer'
+
     id = DB.Column(DB.Integer, primary_key=True)
 
     company_name = DB.Column(DB.String(256), unique=True, nullable=False)
@@ -82,8 +85,11 @@ class CUSTOMER_CONTACTS(DB.Model):
     def __repr__(self):
         return f"<Contact {self.name}: from Company {self.customer.company_name}>"
     
+'''
+class PRODUCT(DB.Model):
 
-class PRODUCTS(DB.Model):
+    __tablename__ = 'product'
+
     id = DB.Column(DB.Integer, primary_key = True)
     customer_id = DB.Column(DB.Integer, DB.ForeignKey('customer.id'), nullable=False)
 
@@ -116,5 +122,17 @@ class PRODUCT_PLASTIC_REQUIREMENTS(DB.Model):
     masterbatch_plastic_name = DB.Column(DB.String(32))
     masterbatch_qty_g = DB.Column(DB.Float)
     
-    def __repr__(self):
-        return f"<Product_plastic_requirement {self.plastic_name}: for product {self.product.local_product_name}>"
+
+def __repr__(self):
+    return f"<Product_plastic_requirement {self.plastic_name}: for product {self.product.local_product_name}>"
+
+class PRODUCT_PRODUCT_REQUIREMENTS(DB.Model):
+    id = DB.Column(DB.Integer, primary_key = True)
+    product_id = DB.Column(DB.Integer, DB.ForeignKey('product.id'))
+
+    product_required = DB.Column(DB.Integer, DB.ForeignKey('product.id'))
+    masterbatch_qty_g = DB.Column(DB.Integer(3))
+    
+'''
+def __repr__(self):
+    return f"<Product_plastic_requirement {self.plastic_name}: for product {self.product.local_product_name}>"

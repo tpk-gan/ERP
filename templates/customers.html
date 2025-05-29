@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Customers
-<a href="{{ url_for('add_customer') }}">
+<a href="{{ url_for('customers.add_customer') }}">
 <button type="submit" class="button button_green">Add Customer</button>
 </a>
 <a href="{{ url_for('home') }}">
@@ -23,7 +23,7 @@
         </tr>
         {% for customer in customers_html_var %}
             <tr>
-                <td><a href="{{ url_for('customer_detail', customer_id=customer.id) }}"><button type="submit" class="button button_purple">Details</button></a></td>
+                <td><a href="{{ url_for('customers.customer_detail', customer_id=customer.id) }}"><button type="submit" class="button button_purple">Details</button></a></td>
                 <td>{{ customer.company_name| default('N/A') }}</td>
                 <td>{{ customer.gst_number| default('N/A') }}</td> 
                 <td>
